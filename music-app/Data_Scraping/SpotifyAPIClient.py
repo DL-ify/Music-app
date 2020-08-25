@@ -1,17 +1,7 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-import base64
 import datetime
-from urllib.parse import urlencode
-
 import requests
-
-
-# In[48]:
+import base64
+from urllib.parse import urlencode
 
 
 class SpotifyAPI(object):
@@ -60,7 +50,7 @@ class SpotifyAPI(object):
     def get_token_data(self):
         
         return {
-            "grant_type" : "client_credentials"}
+            "grant_type": "client_credentials"}
     
     def perform_auth(self):
         
@@ -74,7 +64,7 @@ class SpotifyAPI(object):
         now = datetime.datetime.now()
         access_token = data['access_token']
         expires_in = data['expires_in']
-        expires = datetime.timedelta(seconds = expires_in) + now
+        expires = datetime.timedelta(seconds=expires_in) + now
         self.access_token = access_token
         self.access_token_expires = expires
         self.access_token_did_expire = expires < now
@@ -97,7 +87,7 @@ class SpotifyAPI(object):
         
         access_token = self.get_access_token()
         headers = {
-            "Authorization" : f"Bearer {access_token}"}
+            "Authorization": f"Bearer {access_token}"}
         return headers
     
     def get_resource(self, lookup_id, resource_type='albums', version='v1'):
@@ -127,7 +117,7 @@ class SpotifyAPI(object):
             return {}
         return r.json()
     
-    def search(self, query=None, operator=None, operator_query=None, search_type='album', limit = 50 ):
+    def search(self, query=None, operator=None, operator_query=None, search_type='album', limit=50):
         
         if query == None:
             raise Exception("A query is required")
@@ -146,7 +136,7 @@ class SpotifyAPI(object):
         headers = self.get_resource_header()
         endpoint = "https://api.spotify.com/v1/playlists"
         lookup_url = f"{endpoint}/{playlist_id}/tracks"
-        r = requests.get(lookup_url, headers = headers)
+        r = requests.get(lookup_url, headers=headers)
         if r.status_code not in range(200,299):
             return {}
         return r.json()
